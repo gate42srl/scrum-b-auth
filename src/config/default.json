@@ -1,6 +1,6 @@
 {
   "PORT": 5000,
-  "MONGODB_URL": "mongodb://localhost:27017/scrum",
+  "MONGODB_URL": "mongodb+srv://francesco_tafone:123moncolle456@testdb.exfff.mongodb.net/?retryWrites=true&w=majority",
   "USER_SERVICE": "http://localhost:5001",
   "TOKEN_BE": "TOKEN"
 }
