@@ -8,9 +8,10 @@ import { validateBody } from "../../middleware"
 // Import validation functions
 import { validateSignup } from "../../validation"
 // Import handlers
-import { signupHandler } from "./handler"
+import { loginHandler, signupHandler } from "./handler"
 
 // API
 router.post("/signup", validateBody(validateSignup), signupHandler)
+router.post("/login", loginHandler)
 
 export default router
