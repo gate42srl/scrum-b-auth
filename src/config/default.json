@@ -2,5 +2,6 @@
   "PORT": 5000,
   "MONGODB_URL": "mongodb://localhost:27017/scrum",
   "USER_SERVICE": "http://localhost:5001",
-  "TOKEN_BE": "TOKEN"
+  "TOKEN_BE": "TOKEN",
+  "JWT_SECRET_KEY": "JWT_SECRET_KEY"
 }

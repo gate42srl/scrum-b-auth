@@ -9,3 +9,5 @@ import * as schemas from "./authSchemas"
 
 // Create validation functions
 export const validateSignup = ajv.compile(schemas.BodySignupSchema)
+export const validateSignin = ajv.compile(schemas.BodySigninSchema)
+export const validateRecovery = ajv.compile(schemas.BodyRecoverySchema)

@@ -6,11 +6,13 @@ const router = Router()
 // Import middleware functions
 import { validateBody } from "../../middleware"
 // Import validation functions
-import { validateSignup } from "../../validation"
+import { validateSignup, validateSignin, validateRecovery } from "../../validation"
 // Import handlers
-import { signupHandler } from "./handler"
+import { signupHandler, signinHandler, recoveryHandler } from "./handler"
 
 // API
 router.post("/signup", validateBody(validateSignup), signupHandler)
+router.post("/signin", validateBody(validateSignin), signinHandler)
+router.post("/recovery", validateBody(validateRecovery), recoveryHandler)
 
 export default router

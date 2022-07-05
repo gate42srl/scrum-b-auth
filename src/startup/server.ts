@@ -18,6 +18,21 @@ const PORT = config.get("PORT") || 3000
 // Create a new express application instance
 const app = express()
 
+// Catching uncaught exceptions and rejected promises
+
+// NOTE: In the next future we should stop the process in these cases and restart it in
+// prod and we should log these in a file or on db
+
+process.on("uncaughtException", (err) => {
+  // This only works for synchronous code
+  throw new Error(err.message)
+})
+
+process.on("unhandledRejection", (err) => {
+  // This only works for synchronous code
+  throw new Error("unhandled Rejection...")
+})
+
 app.use(
   morgan(
     ':req[X-Forwarded-For] - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'

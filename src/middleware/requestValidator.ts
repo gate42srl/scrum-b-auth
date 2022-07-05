@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction, RequestHandler } from "express"
 import { ValidateFunction } from "ajv"
 import { ValidationOption } from "../types/handlers"
+import { VALIDATION_ERROR } from "../error"
 
 export const validateRequest = (field: ValidationOption, validate: ValidateFunction): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -8,14 +9,14 @@ export const validateRequest = (field: ValidationOption, validate: ValidateFunct
     if (!isValid) {
       if (validate.errors) {
         const result = validate.errors.map((el) => {
-          return el.message
+          return el.message!
         })
         const errObj = {
           message: result,
         }
-        return next(errObj)
+        throw new VALIDATION_ERROR(errObj.message)
       }
-      return next(new Error("Invalid request, not allowed"))
+      throw new VALIDATION_ERROR(["Invalid request, not allowed"])
     }
     return next()
   }
