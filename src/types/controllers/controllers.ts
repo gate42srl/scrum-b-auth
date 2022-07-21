@@ -7,5 +7,18 @@ export interface createUser_Controller {
 }
 
 export interface tokenPayload {
-  id: Types.ObjectId
+  id: string
+  email: string
+}
+
+export interface refreshTokenPayload extends tokenPayload {
+  randomKey: number
+}
+
+export interface updateTokenLogFunction {
+  _id?: string
+  token?: string
+  refreshToken?: string
+  userId?: string
+  timestamp?: number
 }

@@ -25,12 +25,12 @@ const app = express()
 
 process.on("uncaughtException", (err) => {
   // This only works for synchronous code
-  throw new Error(err.message)
+  console.log("unhandledException error...", err)
 })
 
-process.on("unhandledRejection", (err) => {
+process.on("unhandledRejection", async (err, promise) => {
   // This only works for synchronous code
-  throw new Error("unhandled Rejection...")
+  console.log("unhandledRejection error...")
 })
 
 app.use(

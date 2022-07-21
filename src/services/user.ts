@@ -1,12 +1,11 @@
-import axios, { AxiosRequestConfig } from "axios"
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import config from "config"
 import { serviceErrorFunction } from "./utils/utils"
-import { createUser_Controller, recovery } from "../types"
+import { createUser_Controller, user } from "../types"
 import { generateRandomPassword, hash } from "../controller"
 
-export const createUser = async (user: createUser_Controller) => {
+export const createUser = async (user: createUser_Controller): Promise<user> => {
   try {
-    console.log("data", user)
     const configurationObj: AxiosRequestConfig = {
       method: "post",
       url: config.get("USER_SERVICE"),
@@ -16,15 +15,14 @@ export const createUser = async (user: createUser_Controller) => {
       },
     }
 
-    const result = await axios(configurationObj)
-
+    var result: AxiosResponse = await axios(configurationObj)
     return result.data
   } catch (err: any) {
-    serviceErrorFunction(err, "User")
+    return serviceErrorFunction(err, "User")
   }
 }
 
-export const recoveryPassword = async (email: string) => {
+export const recoveryPassword = async (email: string): Promise<string> => {
   try {
     const newPassword = generateRandomPassword()
     const hashPassword: string = hash(newPassword)
@@ -35,7 +33,7 @@ export const recoveryPassword = async (email: string) => {
     }
 
     const configurationObj: AxiosRequestConfig = {
-      method: "post",
+      method: "put",
       url: config.get("USER_SERVICE") + "/updatePassword",
       data: body,
       headers: {
@@ -43,15 +41,15 @@ export const recoveryPassword = async (email: string) => {
       },
     }
 
-    const result = await axios(configurationObj)
+    await axios(configurationObj)
 
-    return result.data
+    return newPassword
   } catch (err: any) {
-    serviceErrorFunction(err, "User")
+    return serviceErrorFunction(err, "User")
   }
 }
 
-export const getUserByEmail = async (email: string) => {
+export const getUserByEmail = async (email: string): Promise<user> => {
   try {
     const configurationObj: AxiosRequestConfig = {
       method: "get",
@@ -62,10 +60,10 @@ export const getUserByEmail = async (email: string) => {
       },
     }
 
-    const result = await axios(configurationObj)
+    const result: AxiosResponse = await axios(configurationObj)
 
     return result.data
   } catch (err: any) {
-    serviceErrorFunction(err, "User")
+    return serviceErrorFunction(err, "User")
   }
 }

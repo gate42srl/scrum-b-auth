@@ -8,3 +8,7 @@ export interface signup extends signin {
   firstName: string
   lastName: string
 }
+
+export interface refresh {
+  refreshToken: string
+}

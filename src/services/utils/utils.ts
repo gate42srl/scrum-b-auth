@@ -1,21 +1,23 @@
-import axios, { AxiosError, AxiosPromise } from "axios"
-import { NextFunction } from "express"
+import axios, { AxiosError } from "axios"
 
 // ADD DESCRIPTION
 
 export const serviceErrorFunction = (err: Error | AxiosError, micros: string) => {
   if (axios.isAxiosError(err)) {
     if (err.response) {
+      const response = err.response.data as any
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
       const tmpErrorMessage = err.message
       err.message =
-        "Axios Response Error: Request made but " +
+        tmpErrorMessage +
+        ". Axios Response Error: Request made but " +
         micros +
-        " responded with status code: " +
+        " microservice responded with status code: " +
         err.response.status +
-        " " +
-        tmpErrorMessage
+        " and the following message: " +
+        response.message
+
       throw err
     } else if (err.request) {
       // The request was made but no response was received
@@ -23,7 +25,7 @@ export const serviceErrorFunction = (err: Error | AxiosError, micros: string) =>
       // http.ClientRequest in node.js
       const tmpErrorMessage = err.message
       err.message =
-        "Axios Request Error: no response was received from " + micros + " microservice... " + tmpErrorMessage
+        tmpErrorMessage + ". Axios Request Error: no response was received from " + micros + " microservice... "
       throw err
     } else {
       // Something happened in setting up the request that triggered an Error
@@ -33,7 +35,7 @@ export const serviceErrorFunction = (err: Error | AxiosError, micros: string) =>
     }
   } else {
     // può sparare qui per colpa della serializzazione?? quando faccio console.log di err
-    console.log("UNKNOWN ERROR...")
+    console.log("err", err)
     throw new AxiosError("Unknown error calling " + micros + " microservice")
   }
 }

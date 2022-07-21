@@ -1,7 +1,10 @@
 {
-  "PORT": 5000,
+  "PORT": 3000,
   "MONGODB_URL": "mongodb://localhost:27017/scrum",
-  "USER_SERVICE": "http://localhost:5001",
-  "TOKEN_BE": "TOKEN",
-  "JWT_SECRET_KEY": "JWT_SECRET_KEY"
+  "USER_SERVICE": "http://localhost:3001",
+  "MAIL_SERVICE": "http://localhost:3002",
+  "TOKEN_BE": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiUk9MRV9NSUNSTyIsImlhdCI6MTY1NzUzODI5OX0.vpa5dzDohfvQP7fm7V890BErOd2eYOOb1lkoCiy_Yzg",
+  "JWT_SECRET_KEY": "JWT_SECRET_KEY",
+  "TOKEN_EXPIRATION": "5m",
+  "REFRESHTOKEN_EXPIRATION": "1d"
 }

@@ -2,34 +2,44 @@ import { NextFunction, Request, Response } from "express"
 // Import services
 import { createUser, sendConfirmationMail, recoveryPassword, sendMail } from "../../services"
 // Import controllers
-import { isRegistered, createToken, updateTokenLog } from "../../controller"
+import { isRegistered, refresh, login } from "../../controller"
+import { user, tokenLog, mailData } from "../../types"
 
 export const signupHandler = async (req: Request, res: Response, next: NextFunction) => {
   // Create new user
-  const newUser = await createUser(req.body)
-  res.json(newUser)
+  const newUser: user = await createUser(req.body)
 
   // Send confirmation email
-  await sendConfirmationMail()
+  await sendConfirmationMail(newUser)
 
-  res.status(201).json(newUser)
+  return res.status(201).json(newUser)
 }
 
 export const signinHandler = async (req: Request, res: Response, next: NextFunction) => {
   // search user on db for retriving info
-  const user = await isRegistered(req.body)
-  // generate user token
-  const token = createToken({ id: user._id })
-  // update tokenLog
-  const tokenLog = await updateTokenLog(user._id, { token: token })
-  res.status(200).json(tokenLog)
+  const user: user = await isRegistered(req.body)
+  const tokenLog: tokenLog = await login(user)
+  return res.status(200).json(tokenLog)
 }
 
 export const recoveryHandler = async (req: Request, res: Response, next: NextFunction) => {
-  const data = req.body.email
-  const newPassword = await recoveryPassword(data)
+  const email = req.body.email
+  const newPassword = await recoveryPassword(email)
+  const mailData: mailData = {
+    recipient: [email],
+    subject: "Subject",
+    emailBody: newPassword,
+  }
+  console.log("newPassword", newPassword)
+  await sendMail(mailData)
 
-  // Send Mail
+  return res.status(200).json(newPassword)
+}
 
-  res.status(200).json(newPassword)
+export const refreshHandler = async (req: Request, res: Response, next: NextFunction) => {
+  let token = req.header("Authorization")!
+  let refreshToken = req.body.refreshToken
+  const tokenLog = await refresh(token, refreshToken)
+
+  res.status(200).json(tokenLog)
 }

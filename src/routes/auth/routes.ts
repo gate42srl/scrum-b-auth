@@ -4,15 +4,16 @@ import { Router } from "express"
 const router = Router()
 
 // Import middleware functions
-import { validateBody } from "../../middleware"
+import { validateBody, checkToken } from "../../middleware"
 // Import validation functions
-import { validateSignup, validateSignin, validateRecovery } from "../../validation"
+import { validateSignup, validateSignin, validateRecovery, validateRefresh } from "../../validation"
 // Import handlers
-import { signupHandler, signinHandler, recoveryHandler } from "./handler"
+import { signupHandler, signinHandler, recoveryHandler, refreshHandler } from "./handler"
 
 // API
 router.post("/signup", validateBody(validateSignup), signupHandler)
 router.post("/signin", validateBody(validateSignin), signinHandler)
 router.post("/recovery", validateBody(validateRecovery), recoveryHandler)
+router.post("/refresh", checkToken(), validateBody(validateRefresh), refreshHandler) // Manca validation
 
 export default router

@@ -1,5 +1,5 @@
 import type { JSONSchemaType } from "ajv"
-import { signup, signin, recovery } from "../../types/handlers"
+import { signup, signin, recovery, refresh } from "../../types/handlers"
 
 export const BodySignupSchema: JSONSchemaType<signup> = {
   type: "object",
@@ -73,6 +73,26 @@ export const BodyRecoverySchema: JSONSchemaType<recovery> = {
     },
     required: "email is required...",
     additionalProperties: "properties other than email key is not allowed",
+    _: "unknown validation error...",
+  },
+}
+
+export const BodyRefreshSchema: JSONSchemaType<refresh> = {
+  type: "object",
+  properties: {
+    refreshToken: {
+      type: "string",
+    },
+  },
+  required: ["refreshToken"],
+  additionalProperties: false,
+  errorMessage: {
+    type: "type should be an object",
+    properties: {
+      email: "refreshToken must be a string",
+    },
+    required: "refreshToken is required...",
+    additionalProperties: "properties other than refreshToken key is not allowed",
     _: "unknown validation error...",
   },
 }
